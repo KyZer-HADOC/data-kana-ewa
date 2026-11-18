@@ -19,6 +19,7 @@ public partial class MainWindow : Window
     private readonly DispatcherTimer _timer = new() { Interval = TimeSpan.FromSeconds(1) };
     private readonly ICollectionView _view;
     private string _period = "today";
+    private string _category = "all";
     private int _ticks;
     private bool _ready;
 
@@ -53,8 +54,27 @@ public partial class MainWindow : Window
 
     private bool FilterRow(object o)
     {
+        if (o is not AppRow r) return false;
+        if (_category != "all" && r.Category != _category) return false;
         var q = Search.Text?.Trim();
-        return o is AppRow r && (string.IsNullOrEmpty(q) || r.Name.Contains(q, StringComparison.OrdinalIgnoreCase));
+        return string.IsNullOrEmpty(q) || r.Name.Contains(q, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private void Category_Checked(object sender, RoutedEventArgs e)
+    {
+        if (!_ready) return;
+        if (sender is RadioButton { Tag: string tag })
+        {
+            _category = tag;
+            _view.Refresh();
+            UpdateEmptyState();
+        }
+    }
+
+    private void UpdateEmptyState()
+    {
+        EmptyText.Visibility = _view.IsEmpty ? Visibility.Visible : Visibility.Collapsed;
+        EmptyText.Text = _rows.Count == 0 ? "Waiting for network activity..." : "No apps match this filter";
     }
 
     private void OnTick(object? sender, EventArgs e)
@@ -122,7 +142,7 @@ public partial class MainWindow : Window
         TotalDown.Text = ByteFormat.Size(totalDown);
         TotalUp.Text = ByteFormat.Size(totalUp);
         AppCount.Text = $"{agg.Count} apps";
-        EmptyText.Visibility = _rows.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+        UpdateEmptyState();
     }
 
     private void Period_Checked(object sender, RoutedEventArgs e)
@@ -137,6 +157,8 @@ public partial class MainWindow : Window
 
     private void Search_TextChanged(object sender, TextChangedEventArgs e)
     {
-        if (_ready) _view.Refresh();
+        if (!_ready) return;
+        _view.Refresh();
+        UpdateEmptyState();
     }
 }

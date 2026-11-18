@@ -1,15 +1,16 @@
-# Data Kana Ewa
+# Data Kadayoo
 
 Windows desktop app that shows **which app is using your internet data** (browsers, TikTok, WhatsApp, Minecraft, Steam, etc.) with live speed and Today / 7 days / 30 days / All-time totals.
 
 - .NET 8 WPF GUI
 - Per-process network bytes via Windows kernel ETW (TCP/UDP send + receive)
+- Filter by category (Browsers, Social, Games, Media, Dev, Cloud, System) and search by name
 - Usage history saved in `%AppData%\DataKanaEwa\usage.json`
 - Installer (`setup.exe`) built automatically by GitHub Actions
 
 ## Download
 
-Go to **Releases** (or Actions > latest run > Artifacts) and download `DataKanaEwa-Setup-x.y.z.exe`.
+Go to **Releases** (or Actions > latest run > Artifacts) and download `DataKadayoo-Setup-x.y.z.exe`.
 
 Windows SmartScreen may warn because the installer is not code-signed: click *More info > Run anyway*.
 The app needs **administrator rights** (required for ETW network tracing).
@@ -26,4 +27,4 @@ The app needs **administrator rights** (required for ETW network tracing).
 dotnet publish src/DataKanaEwa/DataKanaEwa.csproj -c Release -r win-x64 --self-contained true -o publish
 "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer\setup.iss
 ```
-Output: `dist\DataKanaEwa-Setup-1.0.0.exe`
+Output: `dist\DataKadayoo-Setup-1.0.0.exe`

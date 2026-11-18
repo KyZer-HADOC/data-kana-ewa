@@ -19,6 +19,7 @@ public sealed class AppRow : INotifyPropertyChanged
     public AppRow(string name)
     {
         Name = name;
+        Category = AppCatalog.CategoryOf(name);
         Initial = name.Length > 0 ? name.Substring(0, 1).ToUpperInvariant() : "?";
 
         int sum = 0;
@@ -30,6 +31,7 @@ public sealed class AppRow : INotifyPropertyChanged
     }
 
     public string Name { get; }
+    public string Category { get; }
     public string Initial { get; }
     public Brush Accent { get; }
 

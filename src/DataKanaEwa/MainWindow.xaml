@@ -1,7 +1,7 @@
 <Window x:Class="DataKanaEwa.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Data Kana Ewa" Height="700" Width="920" MinHeight="540" MinWidth="760"
+        Title="Data Kadayoo" Icon="Assets/app.ico" Height="740" Width="920" MinHeight="540" MinWidth="760"
         Background="#0F1117" Foreground="#E6E8EF" FontFamily="Segoe UI"
         WindowStartupLocation="CenterScreen">
 
@@ -39,6 +39,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -46,7 +47,7 @@
         <!-- Header -->
         <DockPanel Grid.Row="0" Margin="0,0,0,18">
             <StackPanel DockPanel.Dock="Left">
-                <TextBlock Text="Data Kana Ewa" FontSize="26" FontWeight="Bold"/>
+                <TextBlock Text="Data Kadayoo" FontSize="26" FontWeight="Bold"/>
                 <TextBlock Text="Which app is using your internet data" Foreground="#8A90A2" FontSize="13" Margin="0,2,0,0"/>
             </StackPanel>
             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
@@ -108,8 +109,21 @@
                        HorizontalAlignment="Right" VerticalAlignment="Center"/>
         </Grid>
 
+        <!-- Category filter -->
+        <WrapPanel Grid.Row="3" Margin="0,0,0,12">
+            <RadioButton GroupName="cat" Tag="all" Content="All" IsChecked="True" Margin="0,0,6,0" Style="{StaticResource Pill}" Checked="Category_Checked"/>
+            <RadioButton GroupName="cat" Tag="Browsers" Content="Browsers" Margin="0,0,6,0" Style="{StaticResource Pill}" Checked="Category_Checked"/>
+            <RadioButton GroupName="cat" Tag="Social" Content="Social" Margin="0,0,6,0" Style="{StaticResource Pill}" Checked="Category_Checked"/>
+            <RadioButton GroupName="cat" Tag="Games" Content="Games" Margin="0,0,6,0" Style="{StaticResource Pill}" Checked="Category_Checked"/>
+            <RadioButton GroupName="cat" Tag="Media" Content="Media" Margin="0,0,6,0" Style="{StaticResource Pill}" Checked="Category_Checked"/>
+            <RadioButton GroupName="cat" Tag="Dev" Content="Dev" Margin="0,0,6,0" Style="{StaticResource Pill}" Checked="Category_Checked"/>
+            <RadioButton GroupName="cat" Tag="Cloud" Content="Cloud" Margin="0,0,6,0" Style="{StaticResource Pill}" Checked="Category_Checked"/>
+            <RadioButton GroupName="cat" Tag="System" Content="System" Margin="0,0,6,0" Style="{StaticResource Pill}" Checked="Category_Checked"/>
+            <RadioButton GroupName="cat" Tag="Other" Content="Other" Margin="0,0,6,0" Style="{StaticResource Pill}" Checked="Category_Checked"/>
+        </WrapPanel>
+
         <!-- Column header -->
-        <Grid Grid.Row="3" Margin="12,0,12,8">
+        <Grid Grid.Row="4" Margin="12,0,12,8">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="52"/>
                 <ColumnDefinition Width="*"/>
@@ -124,7 +138,7 @@
         </Grid>
 
         <!-- App list -->
-        <Grid Grid.Row="4">
+        <Grid Grid.Row="5">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <ItemsControl x:Name="RowsHost">
                     <ItemsControl.ItemTemplate>
@@ -174,7 +188,7 @@
         </Grid>
 
         <!-- Footer -->
-        <TextBlock Grid.Row="5" x:Name="StatusText" Margin="0,12,0,0" Foreground="#6B7186" FontSize="11"
+        <TextBlock Grid.Row="6" x:Name="StatusText" Margin="0,12,0,0" Foreground="#6B7186" FontSize="11"
                    Text="Live monitoring. Browser traffic (YouTube, Facebook web, etc.) is counted under the browser."/>
     </Grid>
 </Window>

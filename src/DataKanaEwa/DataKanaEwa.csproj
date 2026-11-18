@@ -6,12 +6,17 @@
     <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <AssemblyName>DataKanaEwa</AssemblyName>
+    <AssemblyName>DataKadayoo</AssemblyName>
     <RootNamespace>DataKanaEwa</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Version>1.0.0</Version>
-    <Product>Data Kana Ewa</Product>
+    <Product>Data Kadayoo</Product>
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\app.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Diagnostics.Tracing.TraceEvent" Version="3.1.16" />
