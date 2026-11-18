@@ -5,6 +5,7 @@ Windows desktop app that shows **which app is using your internet data** (browse
 - .NET 8 WPF GUI
 - Per-process network bytes via Windows kernel ETW (TCP/UDP send + receive)
 - Filter by category (Browsers, Social, Games, Media, Dev, Cloud, System) and search by name
+- Close button hides to the system tray and keeps counting; right-click the tray icon to exit or toggle *Start with Windows*
 - Usage history saved in `%AppData%\DataKanaEwa\usage.json`
 - Installer (`setup.exe`) built automatically by GitHub Actions
 

@@ -19,11 +19,13 @@ Compression=lzma2
 SolidCompression=yes
 WizardStyle=modern
 PrivilegesRequired=admin
+CloseApplications=force
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 UninstallDisplayIcon={app}\{#MyAppExe}
 
 [Tasks]
+Name: "autostart"; Description: "Start with Windows (keeps counting data in the background)"; GroupDescription: "Background:"
 Name: "desktopicon"; Description: "Create a desktop shortcut"; GroupDescription: "Additional icons:"
 
 [InstallDelete]
@@ -39,4 +41,8 @@ Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExe}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExe}"; Tasks: desktopicon
 
 [Run]
+Filename: "{app}\{#MyAppExe}"; Parameters: "--enable-autostart"; Flags: runhidden waituntilterminated shellexec; Tasks: autostart
 Filename: "{app}\{#MyAppExe}"; Description: "Launch {#MyAppName}"; Flags: nowait postinstall skipifsilent shellexec
+
+[UninstallRun]
+Filename: "{app}\{#MyAppExe}"; Parameters: "--disable-autostart"; Flags: runhidden waituntilterminated shellexec; RunOnceId: "DisableAutostart"

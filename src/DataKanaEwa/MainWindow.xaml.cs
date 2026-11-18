@@ -22,6 +22,9 @@ public partial class MainWindow : Window
     private string _category = "all";
     private int _ticks;
     private bool _ready;
+    private bool _exiting;
+    private bool _hintShown;
+    private TrayService? _tray;
 
     public MainWindow()
     {
@@ -42,14 +45,63 @@ public partial class MainWindow : Window
         _timer.Tick += OnTick;
         _timer.Start();
 
-        Closing += (_, _) =>
+        Closing += OnClosing;
+        Application.Current.SessionEnding += (_, _) =>
         {
-            _timer.Stop();
+            _exiting = true;
             _store.Save();
-            _monitor.Dispose();
         };
 
+        _tray = new TrayService(
+            () => Dispatcher.Invoke(new Action(ShowFromTray)),
+            () => Dispatcher.Invoke(new Action(ExitApp)));
+
+        if (Environment.GetCommandLineArgs().Contains("--tray"))
+        {
+            ShowInTaskbar = false;
+            WindowState = WindowState.Minimized;
+            Loaded += (_, _) => Hide();
+        }
+
         Refresh();
+    }
+
+
+    private void OnClosing(object? sender, CancelEventArgs e)
+    {
+        if (!_exiting)
+        {
+            // close button = hide to tray; monitoring keeps running
+            e.Cancel = true;
+            Hide();
+            _store.Save();
+            if (!_hintShown)
+            {
+                _hintShown = true;
+                _tray?.Notify("Data Kadayoo", "Still counting data in the background. Right-click the tray icon to exit.");
+            }
+            return;
+        }
+
+        _timer.Stop();
+        _store.Save();
+        _monitor.Dispose();
+        _tray?.Dispose();
+    }
+
+    public void ShowFromTray()
+    {
+        Show();
+        ShowInTaskbar = true;
+        if (WindowState == WindowState.Minimized) WindowState = WindowState.Normal;
+        Activate();
+        Refresh();
+    }
+
+    private void ExitApp()
+    {
+        _exiting = true;
+        Close();
     }
 
     private bool FilterRow(object o)
@@ -94,7 +146,7 @@ public partial class MainWindow : Window
         SpeedUp.Text = ByteFormat.Speed(up);
 
         if (++_ticks % 15 == 0) _store.Save();
-        Refresh();
+        if (IsVisible) Refresh();
 
         if (_monitor.Error is { } err)
         {
